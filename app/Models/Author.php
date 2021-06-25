@@ -12,7 +12,7 @@ class Author extends Model
     protected $fillable = ['name', 'surname'];
     public $timestamps = false;
 
-    public function getFullNameAttribute()
+    public function getFullNameAttribute(): string
     {
         return $this->name.' '.$this->surname;
     }
