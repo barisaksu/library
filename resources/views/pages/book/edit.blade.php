@@ -36,11 +36,11 @@
                             :value="1"
                         />
                     @endif
-                    <x-select
-                        name="author_id"
-                        text="Yazar"
-                        :options="$authors"
-                        :value="$book->author_id??null"
+                    <livewire:multi-select
+                        name="authors"
+                        :selected-ids="$selectedAuthors ?? []"
+                        :model="\App\Models\Author::class"
+                        label="Yazar"
                     />
                     <x-select
                         name="publisher_id"

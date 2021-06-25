@@ -15,12 +15,8 @@ class BookController extends Controller
     public function index()
     {
         return view('pages.book.index', [
-            'books' => Book::with('author', 'publisher', 'block')
+            'books' => Book::with( 'publisher', 'block')
                 ->withCount('available_copies')
-                ->when(
-                    \request()->has('author'),
-                    fn(Builder $q) => $q->where('author_id', \request()->author)
-                )
                 ->when(
                     \request()->has('search'),
                     fn(Builder $q) => $q->where('name', 'like', '%'.\request()->search.'%')
@@ -45,11 +41,11 @@ class BookController extends Controller
         $book = Book::create($request->only([
             'name',
             'isbn',
-            'author_id',
             'publisher_id',
             'block_id'
         ]));
         $book->categories()->sync($request->categories);
+        $book->authors()->sync($request->authors);
         $book->copies()->createMany(array_fill(0, $request->count, ['edition' => $request->edition]));
         return redirect()
             ->route('book.edit', $book->id)
@@ -73,6 +69,7 @@ class BookController extends Controller
             'book' => $book,
             'copies' => $book->copies,
             'authors' => Author::all()->pluck('name', 'id'),
+            'selectedAuthors' => $book->authors->pluck('id')->toArray(),
             'publishers' => Publisher::all()->pluck('name', 'id'),
             'blocks' => Block::all()->pluck('code', 'id'),
             'categories' => Category::all()->pluck('name', 'id'),
@@ -85,11 +82,11 @@ class BookController extends Controller
         $book->update($request->only([
             'name',
             'isbn',
-            'author_id',
             'publisher_id',
             'block_id'
         ]));
         $book->categories()->sync($request->categories);
+        $book->authors()->sync($request->authors);
         return back()->with('success', 'Kitap kaydedildi');
     }
 

@@ -18,7 +18,11 @@
                 <tr>
                     <x-column>{{$book->id}}</x-column>
                     <x-column>{{$book->name}}</x-column>
-                    <x-column>{{$book->author->name}} {{$book->author->surname}}</x-column>
+                    <x-column>
+                        @foreach($book->authors as $author)
+                            {{$author->getFullNameAttribute()}}@if (!$loop->last),@endif
+                        @endforeach
+                    </x-column>
                     <x-column>{{$book->publisher->name}}</x-column>
                     <x-column>{{$book->block->code}}</x-column>
                     <x-column>{{$book->available_copies_count}}</x-column>

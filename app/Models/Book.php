@@ -12,9 +12,9 @@ class Book extends Model
     protected $fillable = ['name', 'isbn', 'author_id', 'publisher_id', 'block_id'];
     public $timestamps = false;
 
-    public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function authors(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsToMany(Author::class, 'book_author');
     }
 
     public function block(): \Illuminate\Database\Eloquent\Relations\BelongsTo
