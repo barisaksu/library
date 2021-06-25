@@ -15,7 +15,7 @@ class BookController extends Controller
     public function index()
     {
         return view('pages.book.index', [
-            'books' => Book::with( 'publisher', 'block')
+            'books' => Book::with( 'authors', 'publisher', 'block')
                 ->withCount('available_copies')
                 ->when(
                     \request()->has('search'),
