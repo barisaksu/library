@@ -22,7 +22,7 @@ class MultiSelect extends Component
             ->whereNotIn('id', $this->selectedIds)
             ->limit(10)
             ->get();
-        return Category::query()->whereIn('id', $this->selectedIds)->get();
+        return $this->model::query()->whereIn('id', $this->selectedIds)->get();
     }
 
     public function choose($id)
